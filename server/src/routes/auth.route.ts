@@ -3,6 +3,6 @@ import { signup, verifiedToken } from '../controllers/auth.controller'
 
 const authRouter = express()
 
-authRouter.post('/signup', signup).get('verify-token/:token', verifiedToken)
+authRouter.post('/signup', signup).get('/verify-token', verifiedToken)
 
 export default authRouter

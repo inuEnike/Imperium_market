@@ -3,21 +3,26 @@ import Auth from "../models/auth.model";
 import { signupValidationSchema } from "../validators/auth.validators";
 import mongoose from "mongoose";
 import transporter from "../utils/nodemailer";
-import uuidv4 from 'uuidv4'
+import { uuid } from 'uuidv4';
 
 export const signup = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { firstName, lastName, email, password, repeatpassword, isVerified } = req.body;
         
         // Validate input
-        const { error } = signupValidationSchema.validate({ firstName, lastName, email, password, repeatpassword, isVerified });
+        const { error } = signupValidationSchema.validate({ firstName, lastName, email, password, repeatpassword });
         if (error) {
             return res.status(400).json({ message: error.details[0].message });
         }
 
         // Generate a verification token
-        const verificationToken = mongoose.Schema.ObjectId;
-
+        const verificationToken = uuid();
+        const findUserEmail = await Auth.findOne({email})
+        if (findUserEmail) {
+            return res.status(401).json({
+                message: "Email has been used, Login."
+            })
+        }
         // Create a new user
         const user = new Auth({ firstName, lastName, email, password, repeatpassword, isVerified, verificationToken });
 
@@ -25,7 +30,7 @@ export const signup = async (req: Request, res: Response, next: NextFunction) =>
         await user.save();
 
         // Prepare the verification URL
-        const verificationUrl = `${req.protocol}://${req.get('host')}/verify-email?token=${verificationToken}`;
+        const verificationUrl = `${req.protocol}://${req.get('host')}/api/v1/auth/verify-token?token=${verificationToken}`;
 
         // Send verification email
         await transporter.sendMail({
@@ -46,7 +51,8 @@ export const signup = async (req: Request, res: Response, next: NextFunction) =>
 };
 
 export const verifiedToken =  async (req: Request, res: Response, next: NextFunction) => {
-    const { token } = req.params;
+    const { token } = req.query;
+
 
     if (!token) {
         return res.status(400).json({ message: 'Token is required' });
@@ -70,4 +76,8 @@ export const verifiedToken =  async (req: Request, res: Response, next: NextFunc
         res.status(500).json({ message: 'An error occurred during verification', error });
     }
 
+}
+
+export const signin =  async (req: Request, res: Response, next: NextFunction) => {
+    
 }

@@ -2,6 +2,7 @@ import app from "./app";
 import { Connect } from "./utils/db";
 import { ENV_DATA } from "./utils/envData";
 
+
 const Port = (port:number) => {
     app.listen(port)
 
