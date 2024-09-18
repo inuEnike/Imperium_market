@@ -6,13 +6,16 @@ interface IAuth extends Document {
     firstName: string;
     lastName: string;
     email: string;
+    phoneNumber: number
     password: string;
     isVerified: boolean
+    isRestricted: boolean
     verificationToken: string | any
+    plan : string
   }
 
 
-const AuthSchema = new Schema({
+const AuthSchema = new Schema<IAuth>({
     firstName: {
         type: String,
     },
@@ -21,7 +24,9 @@ const AuthSchema = new Schema({
     },
     email: {
         type: String,
-        // unique: true
+    },
+    phoneNumber: {
+        type: Number,
     },
     password: {
         type: String,
@@ -29,23 +34,25 @@ const AuthSchema = new Schema({
     isVerified: {
         type: Boolean,
     },
+    isRestricted: {
+        type: Boolean,
+    },
     verificationToken: {
         type: String,
+    },
+    plan: {
+        type: String,
+        enum: {
+            values: ["Pro", "Free"],
+            message: "${Value} is not supported"
+        },
+        default: "Free"
     }
 }, {
   timestamps: true
 })
 
-// Hash password before saving
-AuthSchema.pre('save', function(next) {
-    // Hash the password
-    bcrypt.hash(this.password as string, saltRounds, (err, hash) => {
-        if (err) return next(err);
-        // Override the password with the hashed one
-        this.password = hash;
-        next();
-    });
-});
+
 
 const Auth = model<IAuth>('Auth', AuthSchema);
 

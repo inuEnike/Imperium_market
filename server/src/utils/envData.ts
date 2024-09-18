@@ -12,4 +12,5 @@ export const ENV_DATA: any = {
     JWT_SECRET: process.env.JWT_SECRET,
     MAILER_NAME: process.env.MAILER_NAME,
     MAILER_PASSWORD: process.env.MAILER_PASSWORD,
+    DEVELOPMENT: process.env.DEVELOPMENT
 }
