@@ -1,6 +1,4 @@
 import mongoose, {model, Schema, Document} from "mongoose";
-import bcrypt from 'bcrypt'
-let saltRounds = 10
 
 interface IAuth extends Document {
     firstName: string;

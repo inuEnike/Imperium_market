@@ -1,6 +1,6 @@
 import express, {Express} from "express"
 import authRouter from "./routes/auth.route"
-import { Errorhandler } from "./utils/errorhandler";
+import { Errorhandler } from "./middleware/errorhandler";
 
 const app:Express = express()
 
