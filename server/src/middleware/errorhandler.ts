@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { ENV_DATA } from "./envData";
+import { ENV_DATA } from "../utils/envData";
 
 
 export class Errorhandler{
