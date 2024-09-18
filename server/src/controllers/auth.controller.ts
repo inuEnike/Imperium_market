@@ -10,10 +10,10 @@ import { ENV_DATA } from "../utils/envData";
 
 export const signup = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { firstName, lastName, email, password, repeatpassword, isVerified } = req.body;
+        const { firstName, lastName, email, password, repeatpassword, isVerified,phoneNumber } = req.body;
 
         // Validate input
-        const { error } = signupValidationSchema.validate({ firstName, lastName, email, password, repeatpassword });
+        const { error } = signupValidationSchema.validate({ firstName, lastName, email, password, repeatpassword, phoneNumber });
         if (error) {
             return res.status(400).json({ errMessage: error.details[0].message });
         }
@@ -37,7 +37,8 @@ export const signup = async (req: Request, res: Response, next: NextFunction) =>
             email, 
             password:hashPassword, 
             isVerified, 
-            verificationToken 
+            verificationToken,
+            phoneNumber
         });
 
         // Save the user to the database

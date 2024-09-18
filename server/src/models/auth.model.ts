@@ -33,9 +33,11 @@ const AuthSchema = new Schema<IAuth>({
     },
     isVerified: {
         type: Boolean,
+
     },
     isRestricted: {
         type: Boolean,
+        default: false
     },
     verificationToken: {
         type: String,
