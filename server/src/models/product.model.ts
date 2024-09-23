@@ -5,7 +5,7 @@ interface IReport extends Document {
   name: string;
   price: string;
   description: string;
-  imageURI: [string];
+  imageURI: [];
   location: string;
   condition: string;
 }
