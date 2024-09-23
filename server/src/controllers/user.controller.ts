@@ -53,57 +53,65 @@ export const AdminRestricUser = async (
   try {
     const { id } = req.params;
     const { isRestricted } = req.body;
+
+    // Ensure the isRestricted field is provided
     if (isRestricted === undefined) {
-      return res.status(404).json({
-        errMesage: `The Field is required`,
+      return res.status(400).json({
+        errMessage: `The field 'isRestricted' is required.`,
       });
     }
+
+    // Ensure user ID is provided
     if (!id) {
       return res.status(404).json({
-        errMesage: `User with the id of ${id} not found`,
+        errMessage: `User ID is required.`,
       });
     }
+
+    // Find the user by ID
     const findUser = await Auth.findById(id);
     if (!findUser) {
       return res.status(404).json({
-        errMesage: `User not found`,
+        errMessage: `User not found.`,
       });
     }
 
-    const user = await Auth.findByIdAndUpdate(
+    // Update the user restriction status
+    const updatedUser = await Auth.findByIdAndUpdate(
       id,
       { isRestricted },
-      { new: true, runValidators: true } // Options to return updated document and validate before saving);
+      { new: true, runValidators: true }
     );
 
-    const checkUserRestriction = findUser;
-    if (checkUserRestriction?.isRestricted) {
+    // After updating, check the new status to send the correct email
+    if (updatedUser?.isRestricted) {
       await transporter.sendMail({
         from: "inuenike@gmail.com",
-        to: findUser.email,
+        to: updatedUser?.email,
         subject: "ACCOUNT RESTRICTED",
-        text: `Dear ${findUser.email} your account has been resrticted, Please contact customer care to uplift the restriction`,
+        text: `Dear ${updatedUser.email}, your account has been restricted. Please contact customer care to lift the restriction.`,
       });
     } else {
       await transporter.sendMail({
         from: "inuenike@gmail.com",
-        to: findUser.email,
+        to: updatedUser?.email,
         subject: "ACCOUNT UPLIFTED",
-        text: `Dear ${findUser.email} your account has been Uplifted, Please contact customer care for more information`,
+        text: `Dear ${updatedUser?.email}, your account restriction has been lifted. Please contact customer care for more information.`,
       });
     }
 
-    res.status(201).json({
-      message: "User successfully Restriced .",
-      user,
+    // Respond with success
+    return res.status(200).json({
+      message: `User restriction status successfully updated.`,
+      user: updatedUser,
     });
   } catch (error) {
     next(error);
   }
 };
 
-const AdminDeleteUser = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {};
+// const AdminDeleteUser = async (
+//   req: Request,
+//   res: Response,
+//   next: NextFunction
+// ) => {}
