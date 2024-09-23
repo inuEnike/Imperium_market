@@ -1,59 +1,67 @@
-import mongoose, {model, Schema, Document} from "mongoose";
+import mongoose, { model, Schema, Document } from "mongoose";
 
 interface IAuth extends Document {
-    firstName: string;
-    lastName: string;
-    email: string;
-    phoneNumber: number
-    password: string;
-    isVerified: boolean
-    isRestricted: boolean
-    verificationToken: string | any
-    plan : string
-  }
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: number;
+  password: string;
+  isVerified: boolean;
+  isRestricted: boolean;
+  verificationToken: string | any;
+  plan: string;
+  userType: string;
+}
 
-
-const AuthSchema = new Schema<IAuth>({
+const AuthSchema = new Schema<IAuth>(
+  {
     firstName: {
-        type: String,
+      type: String,
     },
     lastName: {
-        type: String,
+      type: String,
     },
     email: {
-        type: String,
+      type: String,
     },
     phoneNumber: {
-        type: Number,
+      type: Number,
     },
     password: {
-        type: String,
+      type: String,
     },
     isVerified: {
-        type: Boolean,
-
+      type: Boolean,
+    },
+    userType: {
+      type: String,
+      enum: {
+        values: ["Admin", "User"],
+        message: "${Value} is not supported",
+      },
+      default: "User",
     },
     isRestricted: {
-        type: Boolean,
-        default: false
+      type: Boolean,
+      default: false,
     },
     verificationToken: {
-        type: String,
+      type: String,
     },
     plan: {
-        type: String,
-        enum: {
-            values: ["Pro", "Free"],
-            message: "${Value} is not supported"
-        },
-        default: "Free"
-    }
-}, {
-  timestamps: true
-})
+      type: String,
+      enum: {
+        values: ["Pro", "Free"],
+        message: "${Value} is not supported",
+      },
+      default: "Free",
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
 
-
-
-const Auth = model<IAuth>('Auth', AuthSchema);
+const Auth = model<IAuth>("Auth", AuthSchema);
 
 export default Auth;
