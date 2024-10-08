@@ -4,9 +4,11 @@ import { Errorhandler } from "./middleware/errorhandler";
 import userRouter from "./routes/user.route";
 import reportUserRouter from "./routes/reportUser.route";
 import productRouter from "./routes/product.route";
+import cors from 'cors'
 
 const app: Express = express();
 
+app.use(cors())
 app.use(express.json());
 
 const prefix = "/api/v1";

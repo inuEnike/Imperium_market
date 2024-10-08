@@ -47,3 +47,17 @@ export const addProduct = async (
     next(error);
   }
 };
+
+
+export const Products =  async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const products = await Product.find({}).populate('seller', ['email',"_id", "plan"])
+    res.status(200).json({products})
+  } catch (error) {
+    next(error)
+  }
+}

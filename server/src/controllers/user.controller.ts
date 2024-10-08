@@ -115,3 +115,21 @@ export const AdminRestricUser = async (
 //   res: Response,
 //   next: NextFunction
 // ) => {}
+
+
+export const getAuthenticatedUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const getUser = req.user
+    const user = await Auth.findById(getUser.id)
+    console.log(getUser)
+    console.log(user)
+    res.status(200).json({user})
+  }
+  catch(error){
+    next(error)
+  }
+}

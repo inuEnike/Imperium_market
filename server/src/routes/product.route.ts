@@ -1,6 +1,6 @@
 import express from "express";
 import { verifyToken } from "../middleware/auth.middleware";
-import { addProduct } from "../controllers/product.controller";
+import { addProduct, Products } from "../controllers/product.controller";
 import { storage } from "../utils/cloudinary";
 import multer from "multer";
 
@@ -12,6 +12,6 @@ productRouter.post(
   upload.array("file"),
   verifyToken,
   addProduct
-);
+).get('/products', Products);
 
 export default productRouter;

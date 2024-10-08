@@ -14,7 +14,7 @@ const ProductSchema = new Schema<IReport>(
   {
     seller: {
       type: Schema.Types.ObjectId,
-      ref: "user",
+      ref: "Auth",
     },
     price: {
       type: String,

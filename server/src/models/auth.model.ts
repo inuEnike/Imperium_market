@@ -51,7 +51,7 @@ const AuthSchema = new Schema<IAuth>(
     plan: {
       type: String,
       enum: {
-        values: ["Pro", "Free"],
+        values: ["Gold", "Silver", "Bronze", "Platinum", 'Free'],
         message: "${Value} is not supported",
       },
       default: "Free",
