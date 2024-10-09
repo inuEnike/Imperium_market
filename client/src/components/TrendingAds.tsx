@@ -26,7 +26,7 @@ const TrendingAds = () => {
     fetchProducts();
   }, []);
   return (
-    <div className="my-3 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4 ">
+    <div className="my-3 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4 ">
       {/* Card 1 */}
       {products.map((product, index) => (
         <div
@@ -48,7 +48,7 @@ const TrendingAds = () => {
           </div>
 
           {product.seller.plan !== "Free" && (
-            <div className="plan bg-[#dca416] absolute top-0 text-center px-2 w-[50%] text-white py-2">
+            <div className="plan bg-[#dca416] absolute top-0 text-center px-2 w-[50%] text-white py-0.5">
               <p className="text-sm">{product.seller.plan}</p>
             </div>
           )}

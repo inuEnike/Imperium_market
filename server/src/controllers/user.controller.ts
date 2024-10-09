@@ -133,3 +133,5 @@ export const getAuthenticatedUser = async (
     next(error)
   }
 }
+
+// export getProductByUser

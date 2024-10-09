@@ -48,16 +48,54 @@ export const addProduct = async (
   }
 };
 
-
-export const Products =  async (
+export const Products = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const products = await Product.find({}).populate('seller', ['email',"_id", "plan"])
-    res.status(200).json({products})
+    const products = await Product.find({}).populate("seller", [
+      "email",
+      "_id",
+      "plan",
+    ]);
+    res.status(200).json({ products });
   } catch (error) {
-    next(error)
+    next(error);
   }
-}
+};
+
+export const getUserProducts = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const getUser = req.user;
+    const products = await Product.find({ seller: getUser.id }).populate(
+      "seller",
+      ["email", "_id", "plan"]
+    );
+    res.status(200).json({ products });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getSingleProduct = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const product = await Product.findById(req.params.id);
+    if (!product) {
+      return res.status(404).json({
+        errMessage: `No product with the ID of ${req.params.id} found`,
+      });
+    }
+    res.status(200).json(product);
+  } catch (error) {
+    next(error);
+  }
+};

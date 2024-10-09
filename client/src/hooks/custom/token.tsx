@@ -35,7 +35,8 @@ export const useToken = () => {
     const res = await axios.get("/user/user", {
       headers,
     });
-    console.log(res.data.user);
+    return res.data.user;
+    // console.log(res.data.user);
   };
 
   return {
